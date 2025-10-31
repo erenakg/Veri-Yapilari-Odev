@@ -1,0 +1,89 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Mehmet Eren Akgül -- 1306230020
+
+// öğrenci bilgilerini tutan struct
+struct Student {
+    string name;
+    int age;
+    double gpa;
+};
+
+// Kullanıcıdan öğrenci bilgilerini alan fonksiyon - for döngüsü ile çalışır
+void inputStudent(Student* arr, int n)
+{
+    for(int i=0;i<n;i++)
+    {
+        // Öğrencinin ismi
+        cout << i+1 << ". ogrencinin ismini girin: \n";
+        cin >> (*(arr + i)).name;
+
+        // Öğrencinin yaşı
+        cout << i+1 << ". ogrencinin yasini girin: \n";
+        cin >> (*(arr + i)).age;
+
+        // Öğrencinin not ortalaması
+        cout << i+1 << ". ogrencinin GPA'sini girin: \n";
+        cin >> (*(arr + i)).gpa;
+    }
+}
+
+// Öğrencileri GPA'ya göre küçükten büyüğe sıralayan fonksiyon - bubble sort kullanır
+void sortByGPA(Student* arr, int n)
+{
+    Student t;
+
+    for(int k=0; k<n; k++)
+    {
+        for(int i=0; i<n-1; i++)
+        {
+            // Eğer şu anki öğrencinin GPA'si bir sonrakinden büyükse yer değiştir
+            if((*(arr + i)).gpa > (*(arr + i + 1)).gpa)
+            {
+                t = *(arr+i);
+                *(arr+i) = *(arr+i+1);
+                *(arr+i+1) = t;
+            }
+        }
+    }
+}
+
+// Öğrenci bilgilerini tablo formatında ekrana yazdıran fonksiyon
+void printStudent(Student* arr, int n)
+{
+    cout << "|isim| \t |yas| \t |GPA| \n";
+    for(int i=0; i<n; i++)
+    {
+        cout << "|" << (*(arr+i)).name << "| \t |" << (*(arr+i)).age << "| \t |" << (*(arr+i)).gpa << "| \n";
+    }
+}
+
+int main(){
+    int n;
+    cout << "Kac ogrenci eklemek istiyorsunuz?\n";
+    cin >> n;
+
+    // Dinamik olarak n boyutunda Student dizisi oluştur
+    Student* StudentArray = new Student[n];
+    
+    // Öğrenci bilgilerini al
+    inputStudent(StudentArray, n);
+    
+    // GPA'ya göre sırala
+    sortByGPA(StudentArray, n);
+    
+    // Sıralanmış listeyi yazdır
+    printStudent(StudentArray, n);
+
+    // Belleği temizle
+    delete[] StudentArray;
+
+    // Programın kapanmasını bekle
+    cout << "\nCikmak icin Enter'a basin...";
+    cin.ignore(); // Önceki enter'ı temizle
+    cin.get();    // Yeni enter bekle
+
+    return 0;
+}
